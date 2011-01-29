@@ -40,7 +40,8 @@
         var val,
           el = $(this),
           gotFunc,
-          error = false;
+          error = false,
+          temp;
         
         trim(el);
         val = el.val();
@@ -67,8 +68,12 @@
           el.addClass('error').before(errorEl);
           return false;
         } else {
+          temp = errorEl.get(0);
+          // this is for zepto
+          if (temp.parentNode) {
+            temp.parentNode.removeChild(temp);
+          }
           el.removeClass('error');
-          errorEl.remove();
           return true;
         }
       };
