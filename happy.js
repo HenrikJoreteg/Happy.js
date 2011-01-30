@@ -2,15 +2,17 @@
   function trim(el) {
     el.val((''.trim) ? el.val().trim() : $.trim(el.val()));
   }
-  $.fn.validate = function (config) {
-    var fields = [];
+  $.fn.isHappy = function (config) {
+    var fields = [],
+      item;
     
     function getError(error) {
-      return $('<span id="'+error.id+'" class="errorMessage">'+error.message+'</span>');
+      return $('<span id="'+error.id+'" class="unhappyMessage">'+error.message+'</span>');
     }
     function handleSubmit() {
       var errors = false,
-        i;
+        i,
+        l;
       for (i = 0, l = fields.length; i < l; i += 1) {
         if (fields[i].testValid()) {
           errors = true;
@@ -19,7 +21,7 @@
       if (errors) {
         return false;
       } else if (config.testMode) {
-        console.warn('would have submitted');
+        //console.warn('would have submitted');
         return false;
       }
     }
@@ -30,9 +32,8 @@
       var field = $(selector),
         error = {
           message: opts.message,
-          id: selector.slice(1) + '_error'
+          id: selector.slice(1) + '_unhappy'
         },
-        item,
         errorEl = $(error.id).length > 0 ? $(error.id) : getError(error);
         
       fields.push(field);
@@ -45,27 +46,27 @@
         
         trim(el);
         val = el.val();
-        console.log('val', val);
-        gotFunc = (val.length > 0 && isFunction(opts.test))
+        //console.log('val', val);
+        gotFunc = (val.length > 0 && isFunction(opts.test));
         
-        console.log('gotFunc', gotFunc);
+        //console.log('gotFunc', gotFunc);
         
         // check if we've got an error on our hands
         if (opts.required && val.length === 0) {
-          console.log('required but has no value', el);
+          //console.log('required but has no value', el);
           error = true;
         } else if (gotFunc && opts.hasOwnProperty('arg')) {
-          console.log('got an argument thats a func');
+          //console.log('got an argument thats a func');
           error = isFunction(opts.arg) ? opts.test(val, opts.arg()) : opts.test(val, opts.arg);
         } else if (gotFunc && !opts.test(val)) {
-          console.log('got a simple test with no args');
+          //console.log('got a simple test with no args');
           error = true;
         } else {
-          console.log('no error', el);
+          //console.log('no error', el);
         }
         
         if (error) {
-          el.addClass('error').before(errorEl);
+          el.addClass('unhappy').before(errorEl);
           return false;
         } else {
           temp = errorEl.get(0);
@@ -73,7 +74,7 @@
           if (temp.parentNode) {
             temp.parentNode.removeChild(temp);
           }
-          el.removeClass('error');
+          el.removeClass('unhappy');
           return true;
         }
       };
