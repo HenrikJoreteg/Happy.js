@@ -39,6 +39,29 @@ test("check basic required", function () {
 	equal($('.unhappyMessage').length, 0);
 });
 
+test("check setting required with 'required' attribute", function () {
+	var form = fixture('<input type="text" required id="textInput1" />');
+	
+	form.isHappy({
+	    fields: {
+	        '#textInput1': {
+	            message: 'Please enter an email'
+	        }
+	    },
+	    testMode: true
+	});
+	
+	form.trigger('submit');
+	equal($('.unhappy').length, 1);
+	equal($('.unhappyMessage').length, 1);
+	
+	$('#textInput1').val('test');
+	form.trigger('submit');
+	equal($('.unhappy').length, 0);
+	equal($('.unhappyMessage').length, 0);
+});
+
+
 test("check email", function () {
 	var form = fixture('<input type="text" id="textInput1" />');
 	
@@ -55,7 +78,6 @@ test("check email", function () {
 	
 	form.trigger('submit');
 	equal($('.unhappy').length, 1);
-	console.log($('.unhappyMessage'));
 	equal($('.unhappyMessage').length, 1);
 	
 	$('#textInput1').val('test');

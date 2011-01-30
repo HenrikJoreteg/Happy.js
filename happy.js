@@ -21,7 +21,7 @@
       if (errors) {
         return false;
       } else if (config.testMode) {
-        //console.warn('would have submitted');
+        if (window.console) console.warn('would have submitted');
         return false;
       }
     }
@@ -42,27 +42,20 @@
           el = $(this),
           gotFunc,
           error = false,
-          temp;
+          temp, 
+          required = el.get(0).attributes.getNamedItem('required') || opts.required;
         
         trim(el);
         val = el.val();
-        //console.log('val', val);
         gotFunc = (val.length > 0 && isFunction(opts.test));
         
-        //console.log('gotFunc', gotFunc);
-        
         // check if we've got an error on our hands
-        if (opts.required && val.length === 0) {
-          //console.log('required but has no value', el);
+        if (required && val.length === 0) {
           error = true;
         } else if (gotFunc && opts.hasOwnProperty('arg')) {
-          //console.log('got an argument thats a func');
           error = isFunction(opts.arg) ? opts.test(val, opts.arg()) : opts.test(val, opts.arg);
         } else if (gotFunc && !opts.test(val)) {
-          //console.log('got a simple test with no args');
           error = true;
-        } else {
-          //console.log('no error', el);
         }
         
         if (error) {

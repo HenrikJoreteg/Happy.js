@@ -56,7 +56,7 @@ So all you have to do is list our your fields and any arbitrary test function fo
 ##Options
 Each field takes the following attributes all optional.
 
-1. **required** (boolean): self-explanatory
+1. **required** (boolean): You can specify that a field is required here, OR... better yet specify it with the HTML5 `required` attribute like so: `<input type="text" required>`. Happy.js will detect that too, even in IE6. So either way is fine.
 2. **message** (string): message shown in case of an error for this field.
 3. **test** (function): a function that takes the field value as the first argument and returns `true` or `false`.
 4. **arg** (anything): an optional second argument that will get passed to the `test` function. This is useful for comparing with another paramter or whatnot. If this is a function it will be evaluated. This way you can compare it to something that is evaluated at runtime such as what they put in another field or to make a server call to check if a username is available, etc.
