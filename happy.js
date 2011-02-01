@@ -14,7 +14,7 @@
         i,
         l;
       for (i = 0, l = fields.length; i < l; i += 1) {
-        if (fields[i].testValid()) {
+        if (!fields[i].testValid()) {
           errors = true;
         }
       }

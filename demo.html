@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Demo</title>
+    <script src="test/jquery-1.4.4.min.js"></script>
+    <script src="happy.js"></script>
+    <script src="happy.methods.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('#awesomeForm').isHappy({
+          fields: {
+            // reference the field you're talking about, probably by `id`
+            // but you could certainly do $('[name=name]') as well.
+            '#yourName': {
+              required: true,
+              message: 'Might we inquire your name'
+            },
+            '#email': {
+              required: true,
+              message: 'How are we to reach you sans email??',
+              test: happy.email // this can be *any* function that returns true or false
+            }
+          }
+        });
+      }); 
+    </script>
+    <style>
+        body {
+            font-family: Helvetica;
+        }
+        input {
+            display: block;
+        }
+        .unhappyMessage {
+            display:  block;
+        }
+    </style>
+  </head>
+  <body>
+    <form id="awesomeForm" action="/lights/camera" method="post">
+      <input id="yourName" type="text" name="name" />
+      <input id="email" type="text" name="email" class="" />
+      <input type="submit" value="go" />
+    </form>
+  </body>
+</html>
