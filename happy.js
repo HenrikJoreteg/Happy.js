@@ -53,7 +53,7 @@
         if (required && val.length === 0) {
           error = true;
         } else if (gotFunc && opts.hasOwnProperty('arg')) {
-          error = isFunction(opts.arg) ? opts.test(val, opts.arg()) : opts.test(val, opts.arg);
+          error = isFunction(opts.arg) ? !opts.test(val, opts.arg()) : !opts.test(val, opts.arg);
         } else if (gotFunc && !opts.test(val)) {
           error = true;
         }

@@ -90,3 +90,50 @@ test("check email", function () {
 	equal($('.unhappy').length, 0);
 	equal($('.unhappyMessage').length, 0);
 });
+
+
+test("test password match", function () {
+    var form = fixture('<input type="password1" id="p1" /><input type="password2" id="p2" />');
+    
+    form.isHappy({
+        fields: {
+            '#p1': {
+                required: true,
+                message: 'Please enter a new password',
+                test: function (val1, val2) {
+                    console.log('test called', arguments);
+                    console.log((val1 === val2));
+                    return (val1 === val2);
+                },
+                arg: function () {
+                    console.warn('arg func evalled', $('#p2').val());
+                    return $('#p2').val();
+                }
+            },
+            '#p2': {
+                required: true,
+                message: 'Please enter your new password again'
+            }
+        },
+        testMode: true
+    });
+    
+    form.trigger('submit');
+    equal($('.unhappy').length, 2);
+    equal($('.unhappyMessage').length, 2);
+    
+    $('#p1').val('test');
+    form.trigger('submit');
+    equal($('.unhappy').length, 2);
+    equal($('.unhappyMessage').length, 2);
+    
+    $('#p2').val('test2');
+    form.trigger('submit');
+    equal($('.unhappy').length, 1);
+    equal($('.unhappyMessage').length, 1);
+    
+    $('#p2').val('test');
+    form.trigger('submit');
+    equal($('.unhappy').length, 0);
+    equal($('.unhappyMessage').length, 0);
+});
