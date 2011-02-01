@@ -30,7 +30,7 @@ Why, I'm glad you asked! I'll answer with some html and javascript:
                 },
                 '#email': {
                   required: true,
-                  message: 'How are we to reach you sans email??'
+                  message: 'How are we to reach you sans email??',
                   test: happy.email // this can be *any* function that returns true or false
                 }
               }
