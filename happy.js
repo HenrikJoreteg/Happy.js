@@ -1,18 +1,15 @@
 (function($){
   function trim(el) {
-    el.val((''.trim) ? el.val().trim() : $.trim(el.val()));
+    return (''.trim) ? el.val().trim() : $.trim(el.val());
   }
   $.fn.isHappy = function (config) {
-    var fields = [],
-      item;
+    var fields = [], item;
     
     function getError(error) {
       return $('<span id="'+error.id+'" class="unhappyMessage">'+error.message+'</span>');
     }
     function handleSubmit() {
-      var errors = false,
-        i,
-        l;
+      var errors = false, i, l;
       for (i = 0, l = fields.length; i < l; i += 1) {
         if (!fields[i].testValid()) {
           errors = true;
@@ -43,19 +40,30 @@
           gotFunc,
           error = false,
           temp, 
-          required = el.get(0).attributes.getNamedItem('required') || opts.required;
+          required = el.get(0).attributes.getNamedItem('required') || opts.required,
+          password = (field.attr('type') === 'password'),
+          arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
         
-        trim(el);
-        val = el.val();
+        // clean it or trim it
+        if (isFunction(opts.clean)) {
+          val = opts.clean(el.val());
+        } else if (!opts.trim && !password) {
+          val = trim(el);
+        } else {
+          val = el.val();
+        }
+        
+        // write it back to the field
+        el.val(val)
+        
+        // get the value
         gotFunc = (val.length > 0 && isFunction(opts.test));
         
         // check if we've got an error on our hands
         if (required && val.length === 0) {
           error = true;
-        } else if (gotFunc && opts.hasOwnProperty('arg')) {
-          error = isFunction(opts.arg) ? !opts.test(val, opts.arg()) : !opts.test(val, opts.arg);
-        } else if (gotFunc && !opts.test(val)) {
-          error = true;
+        } else if (gotFunc) {
+          error = !opts.test(val, arg);
         }
         
         if (error) {

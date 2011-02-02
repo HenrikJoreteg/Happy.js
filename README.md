@@ -60,6 +60,8 @@ Each field takes the following attributes all optional.
 2. **message** (string): message shown in case of an error for this field.
 3. **test** (function): a function that takes the field value as the first argument and returns `true` or `false`.
 4. **arg** (anything): an optional second argument that will get passed to the `test` function. This is useful for comparing with another paramter or whatnot. If this is a function it will be evaluated. This way you can compare it to something that is evaluated at runtime such as what they put in another field or to make a server call to check if a username is available, etc.
+5. **clean** (function): a function that is used to clean the data before it is validated. Note, this also writes the cleaned data back to the field input.
+6. **trim** (boolean, default: true): Password fields are not trimmed, but other field values are trimmed by default. Also, please note that if you pass a `clean` method it is assumed that you'll handle any trimming, etc, so the value won't be trimmed in that case. 
 
 ##Changelog
 Just getting started, I'm not even gonna give it a version number yet.

@@ -137,3 +137,24 @@ test("test password match", function () {
     equal($('.unhappy').length, 0);
     equal($('.unhappyMessage').length, 0);
 });
+
+test("test passed in 'clean' method", function () {
+	var form = fixture('<input type="text" id="textInput1" />');
+	
+	form.isHappy({
+	    fields: {
+	        '#textInput1': {
+	            message: 'Please enter an email',
+	            clean: function (val) {
+	                return val.replace("a", "b");
+	            }
+	        }
+	    },
+	    testMode: true
+	});
+	
+	
+	$('#textInput1').val('  a  ');
+	form.trigger('submit');
+	equal($('#textInput1').val(), '  b  ');
+});
