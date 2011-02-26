@@ -84,7 +84,7 @@
             
             <ol> 
                 <li> 
-                <code>required</code> (boolean): You can specify that a field is required here, OR... better yet specify it with the HTML5 <code>required</code> attribute like so: <code>&lt;input type="text" required&gt;</code>. Happy.js will detect that too, even in IE6. So either way is fine.</li> 
+                <code>required</code> (boolean or 'sometimes'): You can specify that a field is required here, OR... better yet specify it with the HTML5 <code>required</code> attribute like so: <code>&lt;input type="text" required&gt;</code>. Happy.js will detect that too, even in IE6. So either way is fine. Also, you can pass the string `'sometimes'`, to specify that you <em>always</em> want it to run the `test` function to determine validity. Otherwise 'Happy' will only validate non-blank values. Passing `'sometimes'` lets you make fields conditionally required.</li> 
                 <li> 
                 <code>message</code> (string): message shown in case of an error for this field.</li> 
                 <li> 
@@ -164,6 +164,15 @@
             </ul>
 
             <h2>Changelog</h2>
+            
+            <ul>
+                <li>0.1: 
+                    <ul>
+                        <li>Added support for passing `sometimes` to required option</li>
+                        <li>Minor bugfixes</li>
+                    </ul>
+                </li>
+            </ul>
             
             <p>Just getting started, I'm not even gonna give it a version number yet.</p>
     </div>
