@@ -101,12 +101,9 @@ test("test password match", function () {
                 required: true,
                 message: 'Please enter a new password',
                 test: function (val1, val2) {
-                    console.log('test called', arguments);
-                    console.log((val1 === val2));
                     return (val1 === val2);
                 },
                 arg: function () {
-                    console.warn('arg func evalled', $('#p2').val());
                     return $('#p2').val();
                 }
             },
@@ -157,4 +154,28 @@ test("test passed in 'clean' method", function () {
 	$('#textInput1').val('  a  ');
 	form.trigger('submit');
 	equal($('#textInput1').val(), '  b  ');
+});
+
+test("test passing 'sometimes' to required", function () {
+	var form = fixture('<input type="text" id="textInput1" />'),
+	    testFlag = false;
+	
+	form.isHappy({
+	    fields: {
+	        '#textInput1': {
+	            message: 'Please enter an email',
+	            required: 'sometimes',
+	            test: function (val) {
+	                return testFlag;
+	            }
+	        }
+	    },
+	    testMode: true
+	});
+	
+	form.trigger('submit');
+	equal($('.unhappy').length, 1);
+	testFlag = true;
+	form.trigger('submit');
+	equal($('.unhappy').length, 0);
 });

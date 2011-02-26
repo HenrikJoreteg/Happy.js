@@ -40,7 +40,7 @@
           gotFunc,
           error = false,
           temp, 
-          required = el.get(0).attributes.getNamedItem('required') || opts.required,
+          required = !!el.get(0).attributes.getNamedItem('required') || opts.required,
           password = (field.attr('type') === 'password'),
           arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
         
@@ -54,13 +54,13 @@
         }
         
         // write it back to the field
-        el.val(val)
+        el.val(val);
         
         // get the value
-        gotFunc = (val.length > 0 && isFunction(opts.test));
+        gotFunc = ((val.length > 0 || required === 'sometimes') && isFunction(opts.test));
         
         // check if we've got an error on our hands
-        if (required && val.length === 0) {
+        if (required === true && val.length === 0) {
           error = true;
         } else if (gotFunc) {
           error = !opts.test(val, arg);
@@ -91,5 +91,5 @@
     } else {
       this.bind('submit', handleSubmit);
     }
-  }
+  };
 })(this.jQuery || this.Zepto);
