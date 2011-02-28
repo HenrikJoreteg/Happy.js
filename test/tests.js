@@ -179,3 +179,74 @@ test("test passing 'sometimes' to required", function () {
 	form.trigger('submit');
 	equal($('.unhappy').length, 0);
 });
+
+test("test included email validator", function () {
+    var happyEmails = [
+            'henrik@andyet.net',
+            'h.joreteg@gmail.com',
+            '23423.24.2.2342@test.test',
+            '2.3.2.4.a.a.a.ffasaf.a@aol.com'
+        ],
+        sadEmails = [
+            '.henrik@andyet.net',
+            'henrik.@andyet.net',
+            'test@test.afcom.com.',
+            'h@.h',
+            'a@a'           
+        ],
+        i;
+    
+    for (i = 0; i < happyEmails.length; i++) {
+        ok(happy.email(happyEmails[i]));
+    }
+    
+    for (i = 0; i < sadEmails.length; i++) {
+        ok(!happy.email(sadEmails[i]));
+    }
+});
+
+test("test included date validator", function () {
+    var happyDates = [
+            '12/29/1982',
+            '11/02/2099'
+        ],
+        sadDates = [
+            '123/24/1999',
+            '13/31/2099',
+            '12/32/2099',
+            '1/31/2999'          
+        ],
+        i;
+    
+    for (i = 0; i < happyDates.length; i++) {
+        ok(happy.date(happyDates[i]));
+    }
+    
+    for (i = 0; i < sadDates.length; i++) {
+        ok(!happy.date(sadDates[i]));
+    }
+});
+
+test("test included phone validator", function () {
+    var happyPhones = [
+            '909-765-3941',
+            '(909) 234-2343',
+            '9999999999',
+            '(909)234-2343',
+        ],
+        sadPhones = [
+            '19999999999',
+            '12-123-22311',
+            'asdfasdf',
+            '123-123-12344'
+        ],
+        i;
+    
+    for (i = 0; i < happyPhones.length; i++) {
+        ok(happy.USPhone(happyPhones[i]));
+    }
+    
+    for (i = 0; i < sadPhones.length; i++) {
+        ok(!happy.USPhone(sadPhones[i]));
+    }
+});
