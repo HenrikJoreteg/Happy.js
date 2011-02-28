@@ -199,6 +199,25 @@ test("test required fields should only be tested on submit", function () {
     equal($('.unhappy').length, 1);
 });
 
+test("test non-required fields still tested on blur", function () {
+    var form = fixture('<input type="text" id="textInput1" />');
+    
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                message: 'test',
+                test: happy.email
+            }
+        },
+        testMode: true
+    });
+    
+    $('#textInput1').val('h@h').trigger('blur');
+    equal($('.unhappy').length, 1);
+    form.trigger('submit');
+    equal($('.unhappy').length, 1);
+});
+
 test("test included email validator", function () {
     var happyEmails = [
             'henrik@andyet.net',
