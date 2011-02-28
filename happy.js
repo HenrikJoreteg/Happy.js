@@ -11,7 +11,7 @@
     function handleSubmit() {
       var errors = false, i, l;
       for (i = 0, l = fields.length; i < l; i += 1) {
-        if (!fields[i].testValid()) {
+        if (!fields[i].testValid(true)) {
           errors = true;
         }
       }
@@ -34,7 +34,7 @@
         errorEl = $(error.id).length > 0 ? $(error.id) : getError(error);
         
       fields.push(field);
-      field.testValid = function () {
+      field.testValid = function (submit) {
         var val,
           el = $(this),
           gotFunc,
@@ -60,7 +60,7 @@
         gotFunc = ((val.length > 0 || required === 'sometimes') && isFunction(opts.test));
         
         // check if we've got an error on our hands
-        if (required === true && val.length === 0) {
+        if (submit === true && required === true && val.length === 0) {
           error = true;
         } else if (gotFunc) {
           error = !opts.test(val, arg);

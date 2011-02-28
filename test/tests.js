@@ -180,6 +180,25 @@ test("test passing 'sometimes' to required", function () {
 	equal($('.unhappy').length, 0);
 });
 
+test("test required fields should only be tested on submit", function () {
+    var form = fixture('<input type="text" id="textInput1" />');
+    
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                message: 'test',
+                required: true
+            }
+        },
+        testMode: true
+    });
+    
+    $('#textInput1').trigger('blur');
+    equal($('.unhappy').length, 0);
+    form.trigger('submit');
+    equal($('.unhappy').length, 1);
+});
+
 test("test included email validator", function () {
     var happyEmails = [
             'henrik@andyet.net',
@@ -235,7 +254,6 @@ test("test included phone validator", function () {
             '(909)234-2343',
         ],
         sadPhones = [
-            '19999999999',
             '12-123-22311',
             'asdfasdf',
             '123-123-12344'
