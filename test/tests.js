@@ -218,6 +218,30 @@ test("test non-required fields still tested on blur", function () {
     equal($('.unhappy').length, 1);
 });
 
+test("test unHappy callback", function () {
+    var form = fixture('<input type="text" id="textInput1" required />'),
+        myFlag = false;
+    
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                message: "not happy dude"
+            }
+        },
+        testMode: true,
+        unHappy: function () {
+            myFlag = true;
+        }
+    });
+    
+    form.trigger('submit');
+    ok(myFlag);
+    myFlag = false;
+    $('#textInput1').val('test');
+    form.trigger('submit');
+    equals(myFlag, false);
+});
+
 test("test included email validator", function () {
     var happyEmails = [
             'henrik@andyet.net',
