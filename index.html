@@ -79,7 +79,18 @@
             <p>Yes, there a million form validation plugins already – but I like this approach and the good news is, if you don't, you have other options. In fact, if you want something really full-featured for jQuery. Use <a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">this one</a>. Personally I wanted something really lightweight and extendable (because it's hard to be happy when you're bloated).</p>
 
             <h2>Available Options</h2>
-
+            
+            <p>Top level options are listed below. Only the <code>fields</code> attribute is required.</p> 
+            
+            <ol>
+                <li> 
+                <code>fields</code> (object, see below): The configs for each field with the jquery selector as the key.</li> 
+                <li>
+                <code>submitButton</code> (string): If you pass jQuery selector to this the form will be validated when that item is clicked instead of on submit.</li>
+                <li>
+                <code>unHappy</code> (function): A callback that gets triggered when form submission is attempted but any fields fail validation.</li>
+            </ol>
+            
             <p>Each field takes the following attributes all optional</p>
             
             <ol> 
@@ -166,6 +177,11 @@
             <h2>Changelog</h2>
             
             <ul>
+                <li>0.2: 
+                    <ul>
+                        <li>Added unHappy callback as an option</li>
+                    </ul>
+                </li>
                 <li>0.1: 
                     <ul>
                         <li>Added support for passing `sometimes` to required option</li>
