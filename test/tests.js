@@ -311,3 +311,19 @@ test("test included phone validator", function () {
         ok(!happy.USPhone(sadPhones[i]));
     }
 });
+
+test("test message is empty string when not explicitly set", function() {
+  var form = fixture('<input type="text" id="textInput1" />');
+
+  form.isHappy({
+      fields: {
+          '#textInput1': {
+              required: true,
+          }
+      },
+      testMode: true
+  });
+
+  form.trigger('submit');
+  equal($('.unhappyMessage').first().text(), '');
+});
