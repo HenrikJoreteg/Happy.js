@@ -92,5 +92,6 @@
     } else {
       this.bind('submit', handleSubmit);
     }
+    return this;
   };
 })(this.jQuery || this.Zepto);

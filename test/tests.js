@@ -311,3 +311,8 @@ test("test included phone validator", function () {
         ok(!happy.USPhone(sadPhones[i]));
     }
 });
+
+test("check return value", function () {
+    var form = fixture('');
+    equal(form.isHappy({fields: {}}), form);
+});
