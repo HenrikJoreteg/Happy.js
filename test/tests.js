@@ -243,6 +243,29 @@ test("test unHappy callback", function () {
     equals(myFlag, false);
 });
 
+test("test happy callback", function () {
+    var form = fixture('<input type="text" id="textInput1" required />'),
+    myFlag = false;
+
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                message: "not happy dude"
+            }
+        },
+        testMode: true,
+        happy: function () {
+            myFlag = true;
+        }
+    });
+
+    form.trigger('submit');
+    equals(myFlag, false);
+    $('#textInput1').val('test');
+    form.trigger('submit');
+    ok(myFlag);
+});
+
 test("test included email validator", function () {
     var happyEmails = [
         'henrik@andyet.net',

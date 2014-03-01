@@ -20,9 +20,11 @@
                 if (isFunction(config.unHappy)) config.unHappy();
                 return false;
             } else if (config.testMode) {
+                if (isFunction(config.happy)) config.happy();
                 if (window.console) console.warn('would have submitted');
                 return false;
             }
+            if (isFunction(config.happy)) config.happy();
         }
         function isFunction(obj) {
             return !!(obj && obj.constructor && obj.call && obj.apply);
