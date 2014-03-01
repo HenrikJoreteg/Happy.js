@@ -316,3 +316,19 @@ test("check return value", function () {
     var form = fixture('');
     equal(form.isHappy({fields: {}}), form);
 });
+
+test("test message is empty string when not explicitly set", function() {
+  var form = fixture('<input type="text" id="textInput1" />');
+
+  form.isHappy({
+      fields: {
+          '#textInput1': {
+              required: true,
+          }
+      },
+      testMode: true
+  });
+
+  form.trigger('submit');
+  equal($('.unhappyMessage').first().text(), '');
+});
