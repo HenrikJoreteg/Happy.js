@@ -25,8 +25,8 @@
       <li><a href="https://github.com/andyet/Happy.js/raw/master/happy.js">Happy.js</a></li>
     </ul>
     <div class="download">
-      <a href="http://github.com/andyet/Happy.js/zipball/master"><img width="90" src="images/zip.png"></a>
-      <a href="http://github.com/andyet/Happy.js/tarball/master"><img width="90" src="images/tar.png"></a>
+      <a href="http://github.com/andyet/Happy.js/zipball/master"><img width="90" src="images/zip.png" alt='zip'></a>
+      <a href="http://github.com/andyet/Happy.js/tarball/master"><img width="90" src="images/tar.png" alt='tar'></a>
     </div>
     	
     <p>Or... you can clone <a href="http://github.com/andyet/Happy.js">the whole project from GitHub</a> with 
@@ -87,6 +87,8 @@
                 <code>fields</code> (object, see below): The configs for each field with the jquery selector as the key.</li> 
                 <li>
                 <code>submitButton</code> (string): If you pass jQuery selector to this the form will be validated when that item is clicked instead of on submit.</li>
+                <li>
+                <code>happy</code> (function): A callback that gets triggered when form submission is attempted and all fields pass validation.</li>
                 <li>
                 <code>unHappy</code> (function): A callback that gets triggered when form submission is attempted but any fields fail validation.</li>
             </ol>
