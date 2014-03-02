@@ -20,7 +20,7 @@
     <p id="intro">Lightweight form validation for jQuery or Zepto.js</p>
 
     <h2>Download</h2>
-    
+
     <ul>
       <li><a href="https://github.com/andyet/Happy.js/raw/master/happy.js">Happy.js</a></li>
     </ul>
@@ -28,7 +28,7 @@
       <a href="http://github.com/andyet/Happy.js/zipball/master"><img width="90" src="images/zip.png" alt='zip'></a>
       <a href="http://github.com/andyet/Happy.js/tarball/master"><img width="90" src="images/tar.png" alt='tar'></a>
     </div>
-    	
+
     <p>Or... you can clone <a href="http://github.com/andyet/Happy.js">the whole project from GitHub</a> with 
       <a href="http://git-scm.com">Git</a> by running:</p>
       <pre class="prettyprint">$ git clone git://github.com/andyet/Happy.js</pre>
@@ -62,16 +62,16 @@
   });</code></pre>
 
             <h3>Step 3. - There is no step 3!</h3>
-            
+
             <p>That's it. Happy.js will now validate individual fields on blur events and all fields on submit. If validation fails two things happen:
-            
+
             <ol>
               <li>The field will get an <code>unhappy</code> class (yes, I'm quite serious).</li>
               <li>The field will get a <code>&lt;span&gt;</code> right before it, in the DOM with a class of unhappyMessage and an id of whatever the field's id is plus <code>_unhappy</code>. For example:</li>
             </ol>
-            
+
 <pre class="prettyprint lang-html"><code>&lt;span id=&#x200b;&quot;textInput1_unhappy&quot; class=&#x200b;&quot;unhappyMessage&quot;&gt;&#x200b;Please enter an email&#x200b;&lt;/span&gt;</code>.</pre>
-            
+
             <p>So all you have to do is list our your fields and any arbitrary test function for each. There are a few example validation functions built in. If you use <a href="http://documentcloud.github.com/underscore/">underscore.js</a> I'd suggest mixing in your validation functions into underscore <a href="https://gist.github.com/641397">like this</a>.</p>
 
             <h2>Why Happy.js?</h2>
@@ -79,22 +79,29 @@
             <p>Yes, there a million form validation plugins already – but I like this approach and the good news is, if you don't, you have other options. In fact, if you want something really full-featured for jQuery. Use <a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">this one</a>. Personally I wanted something really lightweight and extendable (because it's hard to be happy when you're bloated).</p>
 
             <h2>Available Options</h2>
-            
+
             <p>Top level options are listed below. Only the <code>fields</code> attribute is required.</p> 
-            
+
             <ol>
                 <li> 
-                <code>fields</code> (object, see below): The configs for each field with the jquery selector as the key.</li> 
+                    <code>fields</code> (object, see below): The configs for each field with the jquery selector as the key.
+                </li>
                 <li>
-                <code>submitButton</code> (string): If you pass jQuery selector to this the form will be validated when that item is clicked instead of on submit.</li>
+                    <code>submitButton</code> (string): If you pass jQuery selector to this the form will be validated when that item is clicked instead of on submit.
+                </li>
                 <li>
-                <code>happy</code> (function): A callback that gets triggered when form submission is attempted and all fields pass validation.</li>
+                    <code>happy</code> (function): A callback that gets triggered when form submission is attempted and all fields pass validation.
+                </li>
                 <li>
-                <code>unHappy</code> (function): A callback that gets triggered when form submission is attempted but any fields fail validation.</li>
+                    <code>unHappy</code> (function): A callback that gets triggered when form submission is attempted but any fields fail validation.
+                </li>
+                <li>
+                    <code>errorTemplate</code> (function): Used to generate custom error html instead of the default.  Is passed a standard error object as its only parameter (which has id and message attributes).  Should return the error message html.
+                </li>
             </ol>
-            
+
             <p>Each field takes the following attributes all optional</p>
-            
+
             <ol> 
                 <li> 
                 <code>required</code> (boolean or 'sometimes'): You can specify that a field is required here, OR... better yet specify it with the HTML5 <code>required</code> attribute like so: <code>&lt;input type="text" required&gt;</code>. Happy.js will detect that too, even in IE6. So either way is fine. Also, you can pass the string `'sometimes'`, to specify that you <em>always</em> want it to run the `test` function to determine validity. Otherwise 'Happy' will only validate non-blank values. Passing `'sometimes'` lets you make fields conditionally required.</li> 
@@ -109,7 +116,7 @@
                 <li> 
                 <code>trim</code> (boolean, default: true): Password fields are not trimmed, but other field values are trimmed by default. Also, please note that if you pass a <code>clean</code> method it is assumed that you'll handle any trimming, etc, so the value won't be trimmed in that case.</li> 
             </ol>
-            
+
             <h2>Examples</h2>
             <h3>Full Working Example</h3>
             <pre class="prettyprint">
@@ -177,7 +184,7 @@
             </ul>
 
             <h2>Changelog</h2>
-            
+
             <ul>
                 <li>0.2: 
                     <ul>
@@ -191,7 +198,7 @@
                     </ul>
                 </li>
             </ul>
-            
+
             <p>Just getting started, I'm not even gonna give it a version number yet.</p>
     </div>
 
