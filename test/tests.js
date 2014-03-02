@@ -1,5 +1,5 @@
 /*global $, test, equal, happy, ok, equals*/
-module("Tiny Validator");
+module('Tiny Validator');
 
 function fixture(html) {
     return $('#qunit-fixture').html('<form>' + html + '</form>').find('form');
@@ -17,7 +17,7 @@ function fill() {
     $('#password2').val('password');
 }
 
-test("check basic required", function () {
+test('check basic required', function () {
     var form = fixture('<input type="text" id="textInput1" />');
 
     form.isHappy({
@@ -40,7 +40,7 @@ test("check basic required", function () {
     equal($('.unhappyMessage').length, 0);
 });
 
-test("check setting required with 'required' attribute", function () {
+test('check setting required with "required" attribute', function () {
     var form = fixture('<input type="text" required id="textInput1" />');
 
     form.isHappy({
@@ -63,7 +63,7 @@ test("check setting required with 'required' attribute", function () {
 });
 
 
-test("check email", function () {
+test('check email', function () {
     var form = fixture('<input type="text" id="textInput1" />');
 
     form.isHappy({
@@ -93,7 +93,7 @@ test("check email", function () {
 });
 
 
-test("test password match", function () {
+test('test password match', function () {
     var form = fixture('<input type="password1" id="p1" /><input type="password2" id="p2" />');
 
     form.isHappy({
@@ -136,7 +136,7 @@ test("test password match", function () {
     equal($('.unhappyMessage').length, 0);
 });
 
-test("test passed in 'clean' method", function () {
+test('test passed in "clean" method', function () {
     var form = fixture('<input type="text" id="textInput1" />');
 
     form.isHappy({
@@ -157,7 +157,7 @@ test("test passed in 'clean' method", function () {
     equal($('#textInput1').val(), '  b  ');
 });
 
-test("test passing 'sometimes' to required", function () {
+test('test passing "sometimes" to required', function () {
     var form = fixture('<input type="text" id="textInput1" />'),
     testFlag = false;
 
@@ -181,7 +181,7 @@ test("test passing 'sometimes' to required", function () {
     equal($('.unhappy').length, 0);
 });
 
-test("test required fields should only be tested on submit", function () {
+test('test required fields should only be tested on submit', function () {
     var form = fixture('<input type="text" id="textInput1" />');
 
     form.isHappy({
@@ -200,7 +200,7 @@ test("test required fields should only be tested on submit", function () {
     equal($('.unhappy').length, 1);
 });
 
-test("test non-required fields still tested on blur", function () {
+test('test non-required fields still tested on blur', function () {
     var form = fixture('<input type="text" id="textInput1" />');
 
     form.isHappy({
@@ -219,14 +219,14 @@ test("test non-required fields still tested on blur", function () {
     equal($('.unhappy').length, 1);
 });
 
-test("test unHappy callback", function () {
+test('test unHappy callback', function () {
     var form = fixture('<input type="text" id="textInput1" required />'),
     myFlag = false;
 
     form.isHappy({
         fields: {
             '#textInput1': {
-                message: "not happy dude"
+                message: 'not happy dude'
             }
         },
         testMode: true,
@@ -243,14 +243,14 @@ test("test unHappy callback", function () {
     equals(myFlag, false);
 });
 
-test("test happy callback", function () {
+test('test happy callback', function () {
     var form = fixture('<input type="text" id="textInput1" required />'),
     myFlag = false;
 
     form.isHappy({
         fields: {
             '#textInput1': {
-                message: "not happy dude"
+                message: 'not happy dude'
             }
         },
         testMode: true,
@@ -266,7 +266,7 @@ test("test happy callback", function () {
     ok(myFlag);
 });
 
-test("test included email validator", function () {
+test('test included email validator', function () {
     var happyEmails = [
         'henrik@andyet.net',
         'h.joreteg@gmail.com',
@@ -291,7 +291,7 @@ test("test included email validator", function () {
     }
 });
 
-test("test included date validator", function () {
+test('test included date validator', function () {
     var happyDates = [
         '12/29/1982',
         '11/02/2099'
@@ -313,7 +313,7 @@ test("test included date validator", function () {
     }
 });
 
-test("test included phone validator", function () {
+test('test included phone validator', function () {
     var happyPhones = [
         '909-765-3941',
         '(909) 234-2343',
@@ -336,12 +336,12 @@ test("test included phone validator", function () {
     }
 });
 
-test("check return value", function () {
+test('check return value', function () {
     var form = fixture('');
     equal(form.isHappy({fields: {}}), form);
 });
 
-test("test message is empty string when not explicitly set", function () {
+test('test message is empty string when not explicitly set', function () {
     var form = fixture('<input type="text" id="textInput1" />');
 
     form.isHappy({
@@ -355,4 +355,26 @@ test("test message is empty string when not explicitly set", function () {
 
     form.trigger('submit');
     equal($('.unhappyMessage').first().text(), '');
+});
+
+test('custom error template', function () {
+    var form = fixture('<input type="text" id="textInput1" />');
+
+    var myTemplate = function (error) {
+        return $('<span id="' + error.id + '" class="customUnhappy">custom ' + error.message + '</span>');
+    };
+
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                required: true,
+            }
+        },
+        testMode: true,
+        errorTemplate: myTemplate
+    });
+
+    form.trigger('submit');
+    equal($('.customUnhappy').length, 1);
+
 });

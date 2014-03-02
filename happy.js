@@ -6,8 +6,17 @@
     $.fn.isHappy = function (config) {
         var fields = [], item;
 
-        function getError(error) {
+        function isFunction(obj) {
+            return !!(obj && obj.constructor && obj.call && obj.apply);
+        }
+        function defaultError(error) { //Default error template
             return $('<span id="' + error.id + '" class="unhappyMessage" role="alert">' + error.message + '</span>');
+        }
+        function getError(error) { //Generate error html from either config or default
+            if (isFunction(config.errorTemplate)) {
+                return config.errorTemplate(error);
+            }
+            return defaultError(error);
         }
         function handleSubmit() {
             var errors = false, i, l;
@@ -25,9 +34,6 @@
                 return false;
             }
             if (isFunction(config.happy)) config.happy();
-        }
-        function isFunction(obj) {
-            return !!(obj && obj.constructor && obj.call && obj.apply);
         }
         function processField(opts, selector) {
             var field = $(selector),
