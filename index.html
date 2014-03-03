@@ -115,6 +115,8 @@
                 <code>clean</code> (function): a function that is used to clean the data before it is validated. Note, this also writes the cleaned data back to the field input.</li> 
                 <li> 
                 <code>trim</code> (boolean, default: true): Password fields are not trimmed, but other field values are trimmed by default. Also, please note that if you pass a <code>clean</code> method it is assumed that you'll handle any trimming, etc, so the value won't be trimmed in that case.</li> 
+                <li> 
+                <code>when</code> (string, default: 'blur'): an event to reevaluate a single field, can be assigned to a custom event.</li> 
             </ol>
 
             <h2>Examples</h2>
