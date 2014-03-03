@@ -106,17 +106,17 @@
                 <li> 
                 <code>required</code> (boolean or 'sometimes'): You can specify that a field is required here, OR... better yet specify it with the HTML5 <code>required</code> attribute like so: <code>&lt;input type="text" required&gt;</code>. Happy.js will detect that too, even in IE6. So either way is fine. Also, you can pass the string `'sometimes'`, to specify that you <em>always</em> want it to run the `test` function to determine validity. Otherwise 'Happy' will only validate non-blank values. Passing `'sometimes'` lets you make fields conditionally required.</li> 
                 <li> 
-                <code>message</code> (string): message shown in case of an error for this field.</li> 
+                <code>message</code> (string): Message shown in case of an error for this field.</li> 
                 <li> 
-                <code>test</code> (function): a function that takes the field value as the first argument and returns <code>true</code> or <code>false</code>.</li> 
+                <code>test</code> (function): A function that takes the field value as the first argument and returns <code>true</code> or <code>false</code>.</li> 
                 <li> 
-                <code>arg</code> (anything): an optional second argument that will get passed to the <code>test</code> function. This is useful for comparing with another paramter or whatnot. If this is a function it will be evaluated. This way you can compare it to something that is evaluated at runtime such as what they put in another field or to make a server call to check if a username is available, etc.</li>
+                <code>arg</code> (anything): An optional second argument that will get passed to the <code>test</code> function. This is useful for comparing with another paramter or whatnot. If this is a function it will be evaluated. This way you can compare it to something that is evaluated at runtime such as what they put in another field or to make a server call to check if a username is available, etc.</li>
                 <li> 
-                <code>clean</code> (function): a function that is used to clean the data before it is validated. Note, this also writes the cleaned data back to the field input.</li> 
+                <code>clean</code> (function): A function that is used to clean the data before it is validated. Note, this also writes the cleaned data back to the field input.</li> 
                 <li> 
                 <code>trim</code> (boolean, default: true): Password fields are not trimmed, but other field values are trimmed by default. Also, please note that if you pass a <code>clean</code> method it is assumed that you'll handle any trimming, etc, so the value won't be trimmed in that case.</li> 
                 <li>
-                <code>when</code> (string, default: 'blur'): an event to reevaluate a single field, can be assigned to a custom event.</li>
+                <code>when</code> (string, default: 'blur'): Event on which to reevaluate this field.</li>
             </ol>
 
             <h2>Examples</h2>
