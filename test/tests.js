@@ -379,51 +379,58 @@ test('custom error template', function () {
 
 });
 
-test('test attribute when to be set on all fields', function () {
+test('test config item when to be set on all fields', function () {
     var form = fixture('<input type="text" id="textInput1" />');
+    var test1ran = false;
 
     form.isHappy({
         fields: {
             '#textInput1': {
-                test: happy.email
-            },
-            '#textInput2': {
-                test: happy.email
+                test: function () {
+                    test1ran = true;
+                    return true;
+                }
             }
         },
         when: 'keyup',
         testMode: true
     });
 
-    $('#textInput1').val('sademail').trigger('blur');
-    equal($('.unhappy').length, 0);
-    $('#textInput1').val('sademail').trigger('keyup');
-    equal($('.unhappy').length, 1);
-    $('#textInput1').val('happy@email.com').trigger('keyup');
-    equal($('.unhappy').length, 0);
-    $('#textInput2').val('happy@email.com').trigger('keyup');
-    equal($('.unhappy').length, 0);
+    $('#textInput1').val('asdf').trigger('blur');
+    equal(test1ran, false);
+    $('#textInput1').val('asdf').trigger('keyup');
+    equal(test1ran, true);
 });
 
-test('test attribute when to be set on a unique field', function () {
+test('test config item when to be set on a unique field', function () {
     var form = fixture('<input type="text" id="textInput1" /><input type="text" id="textInput2" />');
+    var test1ran = false;
+    var test2ran = false;
 
     form.isHappy({
         fields: {
             '#textInput1': {
-                test: happy.email
+                test: function () {
+                    test1ran = true;
+                    return true;
+                }
             },
             '#textInput2': {
-                test: happy.email,
+                test: function () {
+                    test2ran = true;
+                    return true;
+                },
                 when: 'keyup'
             }
         },
         testMode: true
     });
 
-    $('#textInput1').val('sademail').trigger('keyup');
-    equal($('.unhappy').length, 0);
-    $('#textInput2').val('sademail').trigger('keyup');
-    equal($('.unhappy').length, 1);
+    $('#textInput1').val('asdf').trigger('keyup');
+    equal(test1ran, false);
+    $('#textInput1').val('asdf').trigger('blur');
+    equal(test1ran, true);
+    $('#textInput2').val('asdf').trigger('keyup');
+    equal(test2ran, true);
 
 });
