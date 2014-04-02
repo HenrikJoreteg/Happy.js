@@ -378,3 +378,52 @@ test('custom error template', function () {
     equal($('.customUnhappy').length, 1);
 
 });
+
+test('test attribute when to be set on all fields', function () {
+    var form = fixture('<input type="text" id="textInput1" />');
+
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                test: happy.email
+            },
+            '#textInput2': {
+                test: happy.email
+            }
+        },
+        when: 'keyup',
+        testMode: true
+    });
+
+    $('#textInput1').val('sademail').trigger('blur');
+    equal($('.unhappy').length, 0);
+    $('#textInput1').val('sademail').trigger('keyup');
+    equal($('.unhappy').length, 1);
+    $('#textInput1').val('happy@email.com').trigger('keyup');
+    equal($('.unhappy').length, 0);
+    $('#textInput2').val('happy@email.com').trigger('keyup');
+    equal($('.unhappy').length, 0);
+});
+
+test('test attribute when to be set on a unique field', function () {
+    var form = fixture('<input type="text" id="textInput1" /><input type="text" id="textInput2" />');
+
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                test: happy.email
+            },
+            '#textInput2': {
+                test: happy.email,
+                when: 'keyup'
+            }
+        },
+        testMode: true
+    });
+
+    $('#textInput1').val('sademail').trigger('keyup');
+    equal($('.unhappy').length, 0);
+    $('#textInput2').val('sademail').trigger('keyup');
+    equal($('.unhappy').length, 1);
+
+});
