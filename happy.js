@@ -57,7 +57,7 @@
                 // clean it or trim it
                 if (isFunction(opts.clean)) {
                     val = opts.clean(el.val());
-                } else if (!opts.trim && !password) {
+                } else if (!password && typeof opts.trim === 'undefined' || opts.trim) {
                     val = trim(el);
                 } else {
                     val = el.val();
