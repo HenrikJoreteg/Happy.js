@@ -136,6 +136,41 @@ test('test password match', function () {
     equal($('.unhappyMessage').length, 0);
 });
 
+test('test trimming fields', function() {
+    var form = fixture('<input type="text" id="textInput1" />'
+                        + '<input type="text" id="textInput2" />'
+                        + '<input type="text" id="textInput3" />'
+                        + '<input type="password" id="passwordInput" />');
+
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                trim: false
+            },
+            '#textInput2': {
+                trim: true
+            },
+            '#textInput3': {
+                message: 'Please enter an email'
+            },
+            '#passwordInput': {
+                message: 'Please enter a password'
+            }
+        },
+        testMode: true
+    });
+
+    $('#textInput1').val('  a  ');
+    $('#textInput2').val('  b  ');
+    $('#textInput3').val('  c  ');
+    $('#passwordInput').val('  password  ');
+    form.trigger('submit');
+    equal($('#textInput1').val(), '  a  ');
+    equal($('#textInput2').val(), 'b');
+    equal($('#textInput3').val(), 'c');
+    equal($('#passwordInput').val(), '  password  ');
+});
+
 test('test passed in "clean" method', function () {
     var form = fixture('<input type="text" id="textInput1" />');
 
