@@ -80,7 +80,7 @@
 
             <h2>Available Options</h2>
 
-            <p>Top level options are listed below. Only the <code>fields</code> attribute is required.</p> 
+            <p>Top level options are listed below. Only the <code>fields</code> attribute is required.</p>
 
             <ol>
                 <li>
@@ -100,6 +100,9 @@
                 </li>
                 <li>
                     <code>when</code> (string: default: 'blur'): Event on which to reevaluate any field.
+                </li>
+                <li>
+                    <code>classes</code> (object, see below): The classes to set on the input fields and error messages for those fields.
                 </li>
             </ol>
 
@@ -126,6 +129,17 @@
                 </li>
                 <li>
                     <code>when</code> (string, default: 'blur'): Event on which to reevaluate this field. Overrides top level 'when' setting for this field.
+                </li>
+            </ol>
+
+            <p>The classes parameter takes the following attributes all optional</p>
+
+            <ol>
+                <li>
+                    <code>field</code> (string, default: 'unhappy'): Class to apply to the input field on failed validation.
+                </li>
+                <li>
+                    <code>message</code> (string, default: 'unhappyMessage'): Class to apply to the error message for an input that has failed validation.
                 </li>
             </ol>
 
@@ -194,6 +208,11 @@
             <h2>Changelog</h2>
 
             <ul>
+                <li>0.6:
+                    <ul>
+                        <li>Added 'classes' config item</li>
+                    </ul>
+                </li>
                 <li>0.5:
                     <ul>
                         <li>Fixed 'trim' option to work correctly</li>
