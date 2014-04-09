@@ -469,3 +469,27 @@ test('test config item when to be set on a unique field', function () {
     equal(test2ran, true);
 
 });
+
+test('test custom classes', function () {
+    var form = fixture('<input type="text" id="textInput1" />');
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                required: true
+            },
+        },
+        classes: {
+            field: 'error',
+            message: 'errorMsg'
+        },
+        testMode: true
+    });
+
+    form.submit();
+    equal($('#textInput1').attr('class'), 'error');
+    equal($('#textInput1_unhappy').attr('class'), 'errorMsg');
+
+    $('#textInput1').val('asdf');
+    form.submit();
+    equal($('#textInput1').attr('class'), '');
+});

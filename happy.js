@@ -10,7 +10,8 @@
             return !!(obj && obj.constructor && obj.call && obj.apply);
         }
         function defaultError(error) { //Default error template
-            return $('<span id="' + error.id + '" class="unhappyMessage" role="alert">' + error.message + '</span>');
+            var msgErrorClass = config.classes && config.classes.message || 'unhappyMessage';
+            return $('<span id="' + error.id + '" class="' + msgErrorClass + '" role="alert">' + error.message + '</span>');
         }
         function getError(error) { //Generate error html from either config or default
             if (isFunction(config.errorTemplate)) {
@@ -52,7 +53,8 @@
                 temp,
                 required = !!el.get(0).attributes.getNamedItem('required') || opts.required,
                 password = (field.attr('type') === 'password'),
-                arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
+                arg = isFunction(opts.arg) ? opts.arg() : opts.arg,
+                fieldErrorClass = config.classes && config.classes.field || 'unhappy';
 
                 // clean it or trim it
                 if (isFunction(opts.clean)) {
@@ -77,7 +79,7 @@
                 }
 
                 if (error) {
-                    el.addClass('unhappy').after(errorEl);
+                    el.addClass(fieldErrorClass).after(errorEl);
                     return false;
                 } else {
                     temp = errorEl.get(0);
@@ -85,7 +87,7 @@
                     if (temp.parentNode) {
                         temp.parentNode.removeChild(temp);
                     }
-                    el.removeClass('unhappy');
+                    el.removeClass(fieldErrorClass);
                     return true;
                 }
             };
