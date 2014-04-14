@@ -5,6 +5,7 @@
     }
     $.fn.isHappy = function (config) {
         var fields = [], item;
+        var submitPressed = false;
 
         function isFunction(obj) {
             return !!(obj && obj.constructor && obj.call && obj.apply);
@@ -91,12 +92,27 @@
                     return true;
                 }
             };
-            field.bind(opts.when || config.when || 'blur', field.testValid);
+            field.bind(opts.when || config.when || 'blur', function () {
+                if (!submitPressed) {
+                    field.testValid();
+                } else {
+                    $(window).bind('mouseup', function () {
+                        field.testValid();
+                    });
+                }
+            });
         }
 
         for (item in config.fields) {
             processField(config.fields[item], item);
         }
+
+        this.bind('mousedown', function () {
+            submitPressed = true;
+            $(window).bind('mouseup', function () {
+                submitPressed = false;
+            });
+        });
 
         if (config.submitButton) {
             $(config.submitButton).click(handleSubmit);
