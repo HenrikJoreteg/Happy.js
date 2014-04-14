@@ -107,7 +107,7 @@
             processField(config.fields[item], item);
         }
 
-        this.bind('mousedown', function () {
+        $(config.submitButton || this).bind('mousedown', function () {
             submitPressed = true;
             $(window).bind('mouseup', function () {
                 submitPressed = false;
