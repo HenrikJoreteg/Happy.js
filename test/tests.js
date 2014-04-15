@@ -136,11 +136,11 @@ test('test password match', function () {
     equal($('.unhappyMessage').length, 0);
 });
 
-test('test trimming fields', function() {
-    var form = fixture('<input type="text" id="textInput1" />'
-                        + '<input type="text" id="textInput2" />'
-                        + '<input type="text" id="textInput3" />'
-                        + '<input type="password" id="passwordInput" />');
+test('test trimming fields', function () {
+    var form = fixture('<input type="text" id="textInput1" />' +
+                        '<input type="text" id="textInput2" />' +
+                        '<input type="text" id="textInput3" />' +
+                        '<input type="password" id="passwordInput" />');
 
     form.isHappy({
         fields: {
