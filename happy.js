@@ -52,7 +52,7 @@
                 id: selector.slice(1) + '_unhappy'
             };
             var errorEl = $(error.id).length > 0 ? $(error.id) : getError(error);
-            var handleBlur = function handleBlur() {
+            var triggerValidation = function triggerValidation() {
                 if (!pauseMessages) {
                     field.testValid();
                 } else {
@@ -86,7 +86,7 @@
                 gotFunc = ((val.length > 0 || required === 'sometimes') && isFunction(opts.test));
 
                 // check if we've got an error on our hands
-                if (submit === true && required === true && val.length === 0) {
+                if (required === true && val.length === 0) {
                     error = true;
                 } else if (gotFunc) {
                     error = !opts.test(val, arg);
@@ -105,7 +105,16 @@
                     return true;
                 }
             };
-            field.bind(opts.when || config.when || 'blur', handleBlur);
+
+            var triggers = opts.when || config.when || ['blur', 'keyup'];
+            if (triggers instanceof Array) {
+                for (var i = 0; i < triggers.length; i++) {
+                    console.log(triggers[i]);
+                    field.bind(triggers[i], triggerValidation);
+                }
+            } else {
+                field.bind(triggers, triggerValidation);
+            }
         }
 
         for (item in config.fields) {
