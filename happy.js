@@ -1,4 +1,3 @@
-// Happy validation, see http://happyjs.com/
 /*global $*/
 (function happyJS($) {
     function trim(el) {
