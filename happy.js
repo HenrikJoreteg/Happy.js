@@ -1,3 +1,16 @@
+// This adds 'placeholder' to the items listed in the jQuery .support object. 
+jQuery(function() {
+   jQuery.support.placeholder = false;
+   test = document.createElement('input');
+   if('placeholder' in test) jQuery.support.placeholder = true;
+});
+
+// Placeholder support, see https://github.com/mathiasbynens/jquery-placeholder
+(function(e,t,n){function c(e){var t={};var r=/^jQuery\d+$/;n.each(e.attributes,function(e,n){if(n.specified&&!r.test(n.name)){t[n.name]=n.value}});return t}function h(e,t){var r=this;var i=n(r);if(r.value==i.attr("placeholder")&&i.hasClass("placeholder")){if(i.data("placeholder-password")){i=i.hide().next().show().attr("id",i.removeAttr("id").data("placeholder-id"));if(e===true){return i[0].value=t}i.focus()}else{r.value="";i.removeClass("placeholder");r==d()&&r.select()}}}function p(){var e;var t=this;var r=n(t);var i=this.id;if(t.value==""){if(t.type=="password"){if(!r.data("placeholder-textinput")){try{e=r.clone().attr({type:"text"})}catch(s){e=n("<input>").attr(n.extend(c(this),{type:"text"}))}e.removeAttr("name").data({"placeholder-password":r,"placeholder-id":i}).bind("focus.placeholder",h);r.data({"placeholder-textinput":e,"placeholder-id":i}).before(e)}r=r.removeAttr("id").hide().prev().attr("id",i).show()}r.addClass("placeholder");r[0].value=r.attr("placeholder")}else{r.removeClass("placeholder")}}function d(){try{return t.activeElement}catch(e){}}var r=Object.prototype.toString.call(e.operamini)=="[object OperaMini]";var i="placeholder"in t.createElement("input")&&!r;var s="placeholder"in t.createElement("textarea")&&!r;var o=n.fn;var u=n.valHooks;var a=n.propHooks;var f;var l;if(i&&s){l=o.placeholder=function(){return this};l.input=l.textarea=true}else{l=o.placeholder=function(){var e=this;e.filter((i?"textarea":":input")+"[placeholder]").not(".placeholder").bind({"focus.placeholder":h,"blur.placeholder":p}).data("placeholder-enabled",true).trigger("blur.placeholder");return e};l.input=i;l.textarea=s;f={get:function(e){var t=n(e);var r=t.data("placeholder-password");if(r){return r[0].value}return t.data("placeholder-enabled")&&t.hasClass("placeholder")?"":e.value},set:function(e,t){var r=n(e);var i=r.data("placeholder-password");if(i){return i[0].value=t}if(!r.data("placeholder-enabled")){return e.value=t}if(t==""){e.value=t;if(e!=d()){p.call(e)}}else if(r.hasClass("placeholder")){h.call(e,true,t)||(e.value=t)}else{e.value=t}return r}};if(!i){u.input=f;a.value=f}if(!s){u.textarea=f;a.value=f}n(function(){n(t).delegate("form","submit.placeholder",function(){var e=n(".placeholder",this).each(h);setTimeout(function(){e.each(p)},10)})});n(e).bind("beforeunload.placeholder",function(){n(".placeholder").each(function(){this.value=""})})}})(this,document,jQuery);
+$('input, textarea').placeholder();
+
+// Happy validation, see http://happyjs.com/
+/*global $*/
 /*global $*/
 (function happyJS($) {
     function trim(el) {
@@ -71,17 +84,26 @@
                 var arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
                 var fieldErrorClass = config.classes && config.classes.field || 'unhappy';
 
-                // clean it or trim it
-                if (isFunction(opts.clean)) {
-                    val = opts.clean(el.val());
-                } else if (!password && typeof opts.trim === 'undefined' || opts.trim) {
-                    val = trim(el);
+                // handle control groups (checkboxes, radio)
+                if (el.length > 1) {
+                  val = [];
+                  el.each(function(i,obj) {
+                    val.push($(obj).val());
+                  });
+                  val = val.join(',');
                 } else {
-                    val = el.val();
-                }
+                  // clean it or trim it
+                  if (isFunction(opts.clean)) {
+                      val = opts.clean(el.val());
+                  } else if (!password && typeof opts.trim === 'undefined' || opts.trim) {
+                      val = trim(el);
+                  } else {
+                      val = el.val();
+                  }
 
-                // write it back to the field
-                el.val(val);
+                  // write it back to the field
+                  el.val(val);
+                }
 
                 // get the value
                 gotFunc = ((val.length > 0 || required === 'sometimes') && isFunction(opts.test));
@@ -123,3 +145,45 @@
         return this;
     };
 })(this.jQuery || this.Zepto);
+
+/**
+ * AppNexus tracking
+ */
+var prefix = "500m";
+function addSegment(code) {
+  var img = new Image();
+  img.src = 'https://secure.adnxs.com/seg?member_id=2319&t=1&add_code=' + prefix + '_' + code;
+}
+
+function removeSegment(code) {
+  var img = new Image();
+  img.src = 'https://secure.adnxs.com/seg?member_id=2319&t=1&remove_code=' + prefix + '_' + code;
+}
+
+function fireConversion(code) {
+  var img = new Image();
+  img.src = 'https://secure.adnxs.com/px?member_id=2319&t=2&code=' + prefix + '_' + code;
+}
+// Turn remove leading trailing slashes, replace slashes with dashes, lower case
+function cleanPathname(pathname) {
+  pathname = pathname.toLowerCase();
+  pathname = pathname.replace(/\//g, '-');
+  if (pathname.indexOf('-') == 0) {
+    pathname = pathname.substring(1);
+  }
+  if (pathname.lastIndexOf('-') == pathname.length - 1) {
+    pathname = pathname.substring(0, pathname.length -1);
+  }
+  if (pathname.length == 0) {
+    pathname = 'index';
+  }
+  return pathname;
+}
+
+if (document.referrer.indexOf(location.protocol + "//" + location.host) != 0) {
+  // Record user landed on this page
+  var pathname = window.location.pathname;
+  var page = cleanPathname(pathname);
+  addSegment('entrance_' + page);
+}
+addSegment('all');
