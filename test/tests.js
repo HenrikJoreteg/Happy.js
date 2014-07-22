@@ -514,3 +514,20 @@ test('test custom classes', function () {
     form.submit();
     equal($('#textInput1').attr('class'), '');
 });
+
+test('checkboxe values aren\'t clobbered', function () {
+    var form = fixture('<input class="answer" id="valueA" type="checkbox" name="answer" value="a"/><input class="answer" id="valueB" type="checkbox" name="answer" value="b"/>');
+
+    form.isHappy({
+        fields: {
+            '.answer': {
+                required: true
+            }
+        },
+        testMode: true
+    });
+
+    form.submit();
+    equal($('#valueA').attr('value'), 'a');
+    equal($('#valueB').attr('value'), 'b');
+});
