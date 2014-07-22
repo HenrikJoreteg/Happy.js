@@ -414,6 +414,27 @@ test('custom error template', function () {
 
 });
 
+test ('error target', function () {
+
+    var form = fixture('<p id="customError"><input type="text" id="textInput" /></p>');
+
+    form.isHappy({
+        fields: {
+            '#textInput': {
+                required: true,
+                message: 'nope',
+                errorTarget: '#customError'
+            }
+        },
+        testMode: true
+    });
+
+    form.trigger('submit');
+    equal($('#customError').length, 1); //Didn't insert after input
+    equal($($('form').children()[1]).text(), 'nope'); //Inserted after <p>
+
+});
+
 test('test config item when to be set on all fields', function () {
     var form = fixture('<input type="text" id="textInput1" />');
     var test1ran = false;

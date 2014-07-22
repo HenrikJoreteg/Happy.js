@@ -64,7 +64,7 @@
             field.testValid = function testValid(submit) {
                 var val, gotFunc, temp;
                 var el = $(this);
-                var error_target = (opts.error_target && $(opts.error_target)) || el;
+                var errorTarget = (opts.errorTarget && $(opts.errorTarget)) || el;
                 var error = false;
                 var required = !!el.get(0).attributes.getNamedItem('required') || opts.required;
                 var password = (field.attr('type') === 'password');
@@ -103,7 +103,7 @@
                 }
 
                 if (error) {
-                    error_target.addClass(fieldErrorClass).after(errorEl);
+                    errorTarget.addClass(fieldErrorClass).after(errorEl);
                     return false;
                 } else {
                     temp = errorEl.get(0);
@@ -111,7 +111,7 @@
                     if (temp.parentNode) {
                         temp.parentNode.removeChild(temp);
                     }
-                    error_target.removeClass(fieldErrorClass);
+                    errorTarget.removeClass(fieldErrorClass);
                     return true;
                 }
             };
