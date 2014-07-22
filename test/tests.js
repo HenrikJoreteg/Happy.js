@@ -515,7 +515,7 @@ test('test custom classes', function () {
     equal($('#textInput1').attr('class'), '');
 });
 
-test('checkboxe values aren\'t clobbered', function () {
+test('checkbox values aren\'t clobbered', function () {
     var form = fixture('<input class="answer" id="valueA" type="checkbox" name="answer" value="a"/><input class="answer" id="valueB" type="checkbox" name="answer" value="b"/>');
 
     form.isHappy({
