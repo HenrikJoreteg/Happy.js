@@ -104,6 +104,9 @@
                 <li>
                     <code>classes</code> (object, see below): The classes to set on the input fields and error messages for those fields.
                 </li>
+                <li>
+                    <code>errorTarget</code> (string): Selector to use in lieu of the input element itself when choosing where to insert the error html.  Error html will be inserted .after() this selector
+                </li>
             </ol>
 
             <p>Each field takes the following attributes all optional</p>
@@ -200,6 +203,7 @@
                 <li><a href="https://github.com/am">Antonio Miranda</a></li>
                 <li><a href="https://twitter.com/smithamilli">Smitha Milli</a></li>
                 <li><a href="https://twitter.com/philip_roberts">Philip Roberts</a></li>
+                <li><a href="https://github.com/alexblack">Alex Black</a></li>
             </ul>
 
             <h2>Tested in:</h2>
@@ -209,6 +213,11 @@
             <h2>Changelog</h2>
 
             <ul>
+                <li>0.8:
+                    <ul>
+                        <li>Added errorTarget config item</li>
+                        <li>Bugfix so that checkbox values don't get clobbered
+                    </ul>
                 <li>0.7:
                     <ul>
                         <li>Fixed UI bug where error messages pushed the submit button out from under the mouse</li>
