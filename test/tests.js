@@ -531,3 +531,26 @@ test('checkbox values aren\'t clobbered', function () {
     equal($('#valueA').attr('value'), 'a');
     equal($('#valueB').attr('value'), 'b');
 });
+
+test('check name attribute selector', function () {
+    var form = fixture('<input type="text" name="textInput1" />');
+
+    form.isHappy({
+        fields: {
+            '[name="textInput1"]': {
+                required: true,
+                message: 'Please enter an email'
+            }
+        },
+        testMode: true
+    });
+
+    form.trigger('submit');
+    equal($('.unhappy').length, 1);
+    equal($('.unhappyMessage').length, 1);
+
+    $('[name="textInput1"]').val('test');
+    form.trigger('submit');
+    equal($('.unhappy').length, 0);
+    equal($('.unhappyMessage').length, 0);
+});
