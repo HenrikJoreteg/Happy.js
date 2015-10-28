@@ -20,7 +20,7 @@
             }
             return defaultError(error);
         }
-        function handleSubmit() {
+        function handleSubmit(e) {
             var  i, l;
             var errors = false;
             for (i = 0, l = fields.length; i < l; i += 1) {
@@ -32,9 +32,9 @@
                 if (isFunction(config.unHappy)) config.unHappy();
                 return false;
             } else if (config.testMode) {
-                if (isFunction(config.happy)) return config.happy();
+                e.preventDefault();
                 if (window.console) console.warn('would have submitted');
-                return false;
+                if (isFunction(config.happy)) return config.happy();
             }
             if (isFunction(config.happy)) return config.happy();
         }
