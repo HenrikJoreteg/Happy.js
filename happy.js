@@ -47,9 +47,10 @@
         }
         function processField(opts, selector) {
             var field = $(selector);
+            selector = field.prop('id') || field.prop('name').replace(['[',']'], '');
             var error = {
                 message: opts.message || '',
-                id: selector.slice(1) + '_unhappy'
+                id: selector + '_unhappy'
             };
             var errorEl = $(error.id).length > 0 ? $(error.id) : getError(error);
             var handleBlur = function handleBlur() {
