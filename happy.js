@@ -29,14 +29,14 @@
                 }
             }
             if (errors) {
-                if (isFunction(config.unHappy)) config.unHappy();
+                if (isFunction(config.unHappy)) config.unHappy(e);
                 return false;
             } else if (config.testMode) {
                 e.preventDefault();
                 if (window.console) console.warn('would have submitted');
-                if (isFunction(config.happy)) return config.happy();
+                if (isFunction(config.happy)) return config.happy(e);
             }
-            if (isFunction(config.happy)) return config.happy();
+            if (isFunction(config.happy)) return config.happy(e);
         }
         function handleMouseUp() {
             pauseMessages = false;
