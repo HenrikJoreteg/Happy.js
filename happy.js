@@ -68,7 +68,7 @@
                 var el = $(this);
                 var errorTarget = (opts.errorTarget && $(opts.errorTarget)) || el;
                 var error = false;
-                var required = !!el.get(0).attributes.getNamedItem('required') || opts.required;
+                var required = el.prop('required') || opts.required;
                 var password = (field.attr('type') === 'password');
                 var arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
                 var fieldErrorClass = config.classes && config.classes.field || 'unhappy';
@@ -121,7 +121,9 @@
         }
 
         for (item in config.fields) {
-            processField(config.fields[item], item);
+            if (config.fields.hasOwnProperty(item)) {
+                processField(config.fields[item], item);
+            }
         }
 
         $(config.submitButton || this).on('mousedown', handleMouseDown);
