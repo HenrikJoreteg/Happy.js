@@ -43,7 +43,6 @@
         }
         function handleMouseDown() {
             pauseMessages = true;
-            $(window).bind('mouseup', handleMouseUp);
         }
         function processField(opts, selector) {
             var field = $(selector);
@@ -59,7 +58,7 @@
                 if (!pauseMessages) {
                     field.testValid();
                 } else {
-                    $(window).bind('mouseup', field.testValid.bind(this));
+                    $(window).one('mouseup', field.testValid.bind(this));
                 }
             };
 
@@ -118,19 +117,20 @@
                     return true;
                 }
             };
-            field.bind(opts.when || config.when || 'blur', handleBlur);
+            field.on(opts.when || config.when || 'blur', handleBlur);
         }
 
         for (item in config.fields) {
             processField(config.fields[item], item);
         }
 
-        $(config.submitButton || this).bind('mousedown', handleMouseDown);
+        $(config.submitButton || this).on('mousedown', handleMouseDown);
+        $(window).on('mouseup', handleMouseUp);
 
         if (config.submitButton) {
             $(config.submitButton).click(handleSubmit);
         } else {
-            this.bind('submit', handleSubmit);
+            this.on('submit', handleSubmit);
         }
         return this;
     };
