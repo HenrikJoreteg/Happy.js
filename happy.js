@@ -47,6 +47,8 @@
         }
         function processField(opts, selector) {
             var field = $(selector);
+            if (!field.length) return;
+
             selector = field.prop('id') || field.prop('name').replace(['[',']'], '');
             var error = {
                 message: opts.message || '',
