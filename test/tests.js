@@ -554,3 +554,25 @@ test('check name attribute selector', function () {
     equal($('.unhappy').length, 0);
     equal($('.unhappyMessage').length, 0);
 });
+
+test('error message persists until valid', function() {
+    var form = fixture('<input type="text" id="textInput1" />');
+
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                required: true,
+                message: 'Please enter an email'
+            }
+        },
+        testMode: true
+    });
+
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').text(), 'Please enter an email', 'Error message present after submit.');
+    $('#textInput1').trigger('blur');
+    equal($('#textInput1_unhappy').text(), 'Please enter an email', 'Error message persists after blur.');
+    $('#textInput1').val('name@example.com');
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').length, 0, 'Error message removed with valid value.');
+});

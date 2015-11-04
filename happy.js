@@ -58,49 +58,49 @@
                 if (!pauseMessages) {
                     field.testValid();
                 } else {
-                    $(window).one('mouseup', field.testValid.bind(this));
+                    $(window).one('mouseup', field.testValid);
                 }
             };
 
             fields.push(field);
             field.testValid = function testValid(submit) {
                 var val, gotFunc, temp;
-                var el = $(this);
-                var errorTarget = (opts.errorTarget && $(opts.errorTarget)) || el;
-                var error = false;
-                var required = el.prop('required') || opts.required;
-                var password = (field.attr('type') === 'password');
+                var required = field.prop('required') || opts.required;
+                var password = field.attr('type') === 'password';
                 var arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
+                var errorTarget = (opts.errorTarget && $(opts.errorTarget)) || field;
                 var fieldErrorClass = config.classes && config.classes.field || 'unhappy';
+                var error = errorTarget.hasClass(fieldErrorClass);
 
                 // handle control groups (checkboxes, radio)
-                if (el.length > 1) {
-                  val = [];
-                  el.each(function(i,obj) {
-                    val.push($(obj).val());
-                  });
-                  val = val.join(',');
+                if (field.length > 1) {
+                    val = [];
+                    field.each(function(i,obj) {
+                        val.push($(obj).val());
+                    });
+                    val = val.join(',');
                 } else {
-                  // clean it or trim it
-                  if (isFunction(opts.clean)) {
-                      val = opts.clean(el.val());
-                  } else if (!password && typeof opts.trim === 'undefined' || opts.trim) {
-                      val = trim(el);
-                  } else {
-                      val = el.val();
-                  }
+                    // clean it or trim it
+                    if (isFunction(opts.clean)) {
+                        val = opts.clean(field.val());
+                    } else if (!password && typeof opts.trim === 'undefined' || opts.trim) {
+                        val = trim(field);
+                    } else {
+                        val = field.val();
+                    }
 
-                  // write it back to the field
-                  el.val(val);
+                    // write it back to the field
+                    field.val(val);
                 }
 
                 // get the value
                 gotFunc = ((val.length > 0 || required === 'sometimes') && isFunction(opts.test));
 
                 // check if we've got an error on our hands
-                if (submit === true && required === true && val.length === 0) {
-                    error = true;
-                } else if (gotFunc) {
+                if (submit === true && required === true) {
+                    error = !val.length;
+                }
+                if (gotFunc) {
                     error = !opts.test(val, arg);
                 }
 
