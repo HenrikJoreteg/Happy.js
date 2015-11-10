@@ -576,3 +576,54 @@ test('error message persists until valid', function() {
     form.trigger('submit');
     equal($('#textInput1_unhappy').length, 0, 'Error message removed with valid value.');
 });
+
+test('custom error messages', function() {
+    var form = fixture('<input type="text" id="textInput1" />');
+
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                required: true,
+                test: function(value) {
+
+                    var birthday = new Date(value);
+                    var birthdayInt = birthday.getTime();
+
+                    if (isNaN(birthdayInt)) {
+                        return false;
+                    }
+                    if(birthdayInt > new Date()) {
+                        return new Error('Your birthday must have already happened.');
+                    }
+                    if (birthday.getDay() === 3) {
+                        return new Error('Your birthday cannot have happened on a Wednesday.');
+                    }
+                    return true;
+                },
+                message: 'Please provide a valid birth date.'
+            }
+        },
+        testMode: true
+    });
+
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').text(), 'Please provide a valid birth date.', 'Default error message is shown.');
+
+    // tomorrow
+    var dateVal = new Date(new Date().getTime() + (1000 * 60 * 60 * 24)).toString();
+    $('#textInput1').val(dateVal);
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').text(), 'Your birthday must have already happened.', 'Future dates are invalid.');
+
+    $('#textInput1').val('foo');
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').text(), 'Please provide a valid birth date.', 'Default error message is shown for poorly formatted dates.');
+
+    $('#textInput1').val('11/04/2015');
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').text(), 'Your birthday cannot have happened on a Wednesday.', 'Testing for another custom message.');
+
+    $('#textInput1').val('01/01/1989');
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').length, 0, 'Error message removed with valid value.');
+});

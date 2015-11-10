@@ -70,7 +70,8 @@
                 var arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
                 var errorTarget = (opts.errorTarget && $(opts.errorTarget)) || field;
                 var fieldErrorClass = config.classes && config.classes.field || 'unhappy';
-                var error = errorTarget.hasClass(fieldErrorClass);
+                var testResult = errorTarget.hasClass(fieldErrorClass);
+                var oldMessage = error.message;
 
                 // handle control groups (checkboxes, radio)
                 if (field.length > 1) {
@@ -98,13 +99,28 @@
 
                 // check if we've got an error on our hands
                 if (submit === true && required === true) {
-                    error = !val.length;
+                    testResult = !val.length;
                 }
                 if (gotFunc) {
-                    error = !opts.test(val, arg);
+                    testResult = opts.test(val, arg);
+
+                    if (testResult instanceof Error) {
+                        error.message = testResult.message;
+                    }
+                    else {
+                        testResult = !testResult;
+                        error.message = opts.message || '';
+                    }
                 }
 
-                if (error) {
+                // only rebuild the error if necessary
+                if (!oldMessage !== error.message) {
+                    temp = getError(error);
+                    errorEl.replaceWith(temp);
+                    errorEl = temp;
+                }
+
+                if (testResult) {
                     errorTarget.addClass(fieldErrorClass).after(errorEl);
                     return false;
                 } else {
