@@ -1,0 +1,171 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1" />
+    <title>Happy.js | Demo</title>
+    <style>
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        html {
+            font-size: 16px;
+        }
+        body {
+            box-sizing: border-box;
+            font-family: Helvetica;
+            background: #eee;
+            padding: 0 1rem;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #2196F3;
+            margin: 0 0 1rem;
+        }
+        form {
+            margin: 0;
+        }
+        input {
+            display: block;
+        }
+        .unhappyMessage {
+            color: #F44336;
+            display: block;
+        }
+
+        .card {
+            background: #fff;
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 360px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.15) ,
+            0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        input,
+        button,
+        .unhappyMessage {
+            display: block;
+            width: 100%;
+            border: 0;
+            padding: 10px 15px;
+        }
+
+        input {
+            background: #eee;
+            margin-bottom: 1rem;
+            transition: box-shadow .05s;
+        }
+
+        input:focus {
+            outline: 0;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.15);
+        }
+
+        .unhappyMessage {
+            margin-top: -1em;
+            margin-bottom: 1rem;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        button {
+            appearance: none;
+            background: #4CAF50;
+            color: #fff;
+            text-align: center;
+            transition: background .2s;
+        }
+
+        button:hover, button:focus {
+            outline: 0;
+            background: #8BC34A;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://rawgit.com/HenrikJoreteg/Happy.js/master/happy.js"></script>
+    <script src="https://rawgit.com/HenrikJoreteg/Happy.js/master/happy.methods.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#awesomeForm').isHappy({
+                fields: {
+                    // reference the field you're talking about, probably by `id`
+                    // but you could certainly do $('[name=name]') as well.
+                    '#yourName': {
+                        required: true,
+                        message: 'Might we inquire your name'
+                    },
+                    '#email': {
+                        required: true,
+                        message: 'How are we to reach you sans email??',
+                        test: happy.email // this can be *any* function that returns true or false
+                    },
+                    '#birthday': {
+                        required: true,
+                        message: 'Please provide a valid birth date.',
+                        test: function(value) {
+                            var birthday = new Date(value);
+                            var birthdayInt = birthday.getTime();
+
+                            if (isNaN(birthdayInt)) {
+                                // uses the default message.
+                                return false;
+                            }
+                            if(birthdayInt > new Date()) {
+                                return new Error('Your birthday must have already happened.');
+                            }
+                            if (birthday.getDay() === 3) {
+                                return new Error('Your birthday cannot have happened on a Wednesday.');
+                            }
+                            return true;
+                        }
+                    }
+                }
+            });
+            $('#awesomeFormSubmitButton').isHappy({
+                submitButton: '#submitTheForm',
+                fields: {
+                    // reference the field you're talking about, probably by `id`
+                    // but you could certainly do $('[name=name]') as well.
+                    '#yourName-2': {
+                        required: true,
+                        message: 'Might we inquire your name'
+                    },
+                    '#email-2': {
+                        required: true,
+                        message: 'How are we to reach you sans email??',
+                        test: happy.email // this can be *any* function that returns true or false
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="card">
+        <h1>Simple Form</h1>
+        <form id="awesomeForm" action="/lights/camera" method="post">
+            <label for="yourName">Name</label>
+            <input id="yourName" type="text" name="name" />
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" />
+            <label for="birthday">Birthday</label>
+            <input id="birthday" type="text" name="birthday" />
+            <button type="submit">go</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h1>With config.submitButton</h1>
+        <form id="awesomeFormSubmitButton" action="/lights/camera" method="post">
+            <label for="yourName-2">Name</label>
+            <input id="yourName-2" type="text" name="name" />
+            <label for="email-2">Email</label>
+            <input id="email-2" type="email" name="email" />
+        </form>
+    </div>
+
+    <div class="card">
+        <button id="submitTheForm">Submit the form</button>
+    </div>
+</body>
+</html>
