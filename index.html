@@ -56,7 +56,7 @@
       '#email': {
         required: true,
         message: 'How are we to reach you sans email??',
-        test: happy.email // this can be *any* function that returns true or false
+        test: happy.email // this can be *any* function that returns true, false, or an instance of Error
       }
     }
   });</code></pre>
@@ -119,7 +119,7 @@
                     <code>message</code> (string): Message shown in case of an error for this field.
                 </li>
                 <li>
-                    <code>test</code> (function): A function that takes the field value as the first argument and returns <code>true</code> or <code>false</code>.
+                    <code>test</code> (function): A function that takes the field value as the first argument and returns <code>true</code>, <code>false</code>, or an instance of <code>Error</code>. Returning an instance of <code>Error</code> will fail the test.
                 </li>
                 <li>
                     <code>arg</code> (anything): An optional second argument that will get passed to the <code>test</code> function. This is useful for comparing with another paramter or whatnot. If this is a function it will be evaluated. This way you can compare it to something that is evaluated at runtime such as what they put in another field or to make a server call to check if a username is available, etc.
@@ -169,7 +169,27 @@
             '#email': {
               required: true,
               message: 'How are we to reach you sans email??',
-              test: happy.email // this can be *any* function that returns true or false
+              test: happy.email // this can be *any* function that returns true, false, or an instance of Error
+            },
+            '#birthday': {
+              required: true,
+              message: 'Please provide a valid birth date.',
+              test: function(value) {
+                var birthday = new Date(value);
+                var birthdayInt = birthday.getTime();
+
+                if (isNaN(birthdayInt)) {
+                  // uses the default message.
+                  return false;
+                }
+                if(birthdayInt > new Date()) {
+                  return new Error('Your birthday must have already happened.');
+                }
+                if (birthday.getDay() === 3) {
+                  return new Error('Your birthday cannot have happened on a Wednesday.');
+                }
+                return true;
+              }
             }
           }
         });
@@ -204,6 +224,7 @@
                 <li><a href="https://twitter.com/smithamilli">Smitha Milli</a></li>
                 <li><a href="https://twitter.com/philip_roberts">Philip Roberts</a></li>
                 <li><a href="https://github.com/alexblack">Alex Black</a></li>
+                <li><a href="https://github.com/btpoe">Brandon Poe</a></li>
             </ul>
 
             <h2>Tested in:</h2>
@@ -213,6 +234,13 @@
             <h2>Changelog</h2>
 
             <ul>
+                <li>0.9:
+                    <ul>
+                        <li>Added support for custom error messages.</li>
+                        <li>Submit event passed to happy / unHappy callbacks.</li>
+                        <li>Minor bugfixes.</li>
+                    </ul>
+                </li>
                 <li>0.8:
                     <ul>
                         <li>Added errorTarget config item</li>
