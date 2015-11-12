@@ -8,7 +8,7 @@
         var pauseMessages = false;
 
         function isFunction(obj) {
-            return !!(obj && obj.constructor && obj.call && obj.apply);
+            return typeof obj === 'function';
         }
         function defaultError(error) { //Default error template
             var msgErrorClass = config.classes && config.classes.message || 'unhappyMessage';
