@@ -23,6 +23,9 @@
         function handleSubmit(e) {
             var  i, l;
             var errors = false;
+            if (config.testMode) {
+                e.preventDefault();
+            }
             for (i = 0, l = fields.length; i < l; i += 1) {
                 if (!fields[i].testValid(true)) {
                     errors = true;
@@ -32,7 +35,6 @@
                 if (isFunction(config.unHappy)) config.unHappy(e);
                 return false;
             } else if (config.testMode) {
-                e.preventDefault();
                 if (window.console) console.warn('would have submitted');
                 if (isFunction(config.happy)) return config.happy(e);
             }
