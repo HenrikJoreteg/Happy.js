@@ -627,3 +627,39 @@ test('custom error messages', function() {
     form.trigger('submit');
     equal($('#textInput1_unhappy').length, 0, 'Error message removed with valid value.');
 });
+
+test('test support for multiple tests', function() {
+    var form = fixture('<input type="text" id="textInput1" />');
+
+    function minLength(val, min) {
+        return val.length < min ? new Error('Your name must be longer.') : true;
+    }
+
+    function maxLength(val, max) {
+        return val.length > max ? new Error('Your name must be shorter.') : true;
+    }
+
+    form.isHappy({
+        fields: {
+            '#textInput1': {
+                required: true,
+                message: 'Might we inquire your name',
+                test: [minLength, maxLength],
+                arg: [3, 32]
+            }
+        },
+        testMode: true
+    });
+
+    $('#textInput1').val('xx');
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').text(), 'Your name must be longer.', 'Stop after first test fails.');
+
+    $('#textInput1').val((new Array(42)).join('x'));
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').text(), 'Your name must be shorter.', 'Second test fails.');
+
+    $('#textInput1').val('John Smith');
+    form.trigger('submit');
+    equal($('#textInput1_unhappy').length, 0, 'All tests pass.');
+});

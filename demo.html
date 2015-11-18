@@ -83,9 +83,17 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://rawgit.com/HenrikJoreteg/Happy.js/master/happy.js"></script>
-    <script src="https://rawgit.com/HenrikJoreteg/Happy.js/master/happy.methods.js"></script>
+    <script src="happy.js"></script>
+    <script src="happy.methods.js"></script>
     <script>
+        function minLength(val, min) {
+            return val.length < min ? new Error('Your name must be longer than ' + min + ' character' + (min !== 0 ? 's' : '') + '.') : true;
+        }
+
+        function maxLength(val, max) {
+            return val.length > max ? new Error('Your name must be shorter than ' + max + ' character' + (max !== 0 ? 's' : '') + '.') : true;
+        }
+
         $(document).ready(function () {
             $('#awesomeForm').isHappy({
                 fields: {
@@ -93,7 +101,9 @@
                     // but you could certainly do $('[name=name]') as well.
                     '#yourName': {
                         required: true,
-                        message: 'Might we inquire your name'
+                        message: 'Might we inquire your name',
+                        test: [minLength, maxLength],
+                        arg: [3, 64]
                     },
                     '#email': {
                         required: true,

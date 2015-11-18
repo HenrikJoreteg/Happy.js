@@ -66,10 +66,9 @@
 
             fields.push(field);
             field.testValid = function testValid(submit) {
-                var val, gotFunc, temp;
+                var arg, argIsArray, val, temp;
                 var required = field.prop('required') || opts.required;
                 var password = field.attr('type') === 'password';
-                var arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
                 var errorTarget = (opts.errorTarget && $(opts.errorTarget)) || field;
                 var fieldErrorClass = config.classes && config.classes.field || 'unhappy';
                 var testResult = errorTarget.hasClass(fieldErrorClass);
@@ -96,15 +95,30 @@
                     field.val(val);
                 }
 
-                // get the value
-                gotFunc = ((val.length > 0 || required === 'sometimes') && isFunction(opts.test));
-
                 // check if we've got an error on our hands
                 if (submit === true && required === true) {
                     testResult = !val.length;
                 }
-                if (gotFunc) {
-                    testResult = opts.test(val, arg);
+                if ((val.length > 0 || required === 'sometimes') && opts.test) {
+                    if (isFunction(opts.test)) {
+                        arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
+                        testResult = opts.test(val, arg);
+                    }
+                    else if ($.isArray(opts.test)) {
+                        argIsArray = $.isArray(opts.arg);
+                        arg = argIsArray ? opts.arg : isFunction(opts.arg) ? opts.arg() : opts.arg;
+
+                        $.each(opts.test, function (i, test) {
+                            var _arg;
+                            if (isFunction(test)) {
+                                _arg = argIsArray ? ( isFunction(arg[i]) ? arg[i]() : arg[i] ) : ( isFunction(arg) ? arg() : arg );
+                                testResult = test(val, _arg);
+                                if (testResult !== true) {
+                                    return false;
+                                }
+                            }
+                        });
+                    }
 
                     if (testResult instanceof Error) {
                         error.message = testResult.message;
