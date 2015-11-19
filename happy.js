@@ -1,8 +1,5 @@
 /*global $*/
 (function happyJS($) {
-    function trim(el) {
-        return (''.trim) ? el.val().trim() : $.trim(el.val());
-    }
     $.fn.isHappy = function isHappy(config) {
         var fields = [], item;
         var pauseMessages = false;
@@ -66,9 +63,10 @@
 
             fields.push(field);
             field.testValid = function testValid(submit) {
-                var arg, argIsArray, val, temp;
+                var val, temp;
                 var required = field.prop('required') || opts.required;
                 var password = field.attr('type') === 'password';
+                var arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
                 var errorTarget = (opts.errorTarget && $(opts.errorTarget)) || field;
                 var fieldErrorClass = config.classes && config.classes.field || 'unhappy';
                 var testResult = errorTarget.hasClass(fieldErrorClass);
@@ -86,7 +84,7 @@
                     if (isFunction(opts.clean)) {
                         val = opts.clean(field.val());
                     } else if (!password && typeof opts.trim === 'undefined' || opts.trim) {
-                        val = trim(field);
+                        val = $.trim(field.val());
                     } else {
                         val = field.val();
                     }
@@ -101,18 +99,12 @@
                 }
                 if ((val.length > 0 || required === 'sometimes') && opts.test) {
                     if (isFunction(opts.test)) {
-                        arg = isFunction(opts.arg) ? opts.arg() : opts.arg;
                         testResult = opts.test(val, arg);
                     }
-                    else if ($.isArray(opts.test)) {
-                        argIsArray = $.isArray(opts.arg);
-                        arg = argIsArray ? opts.arg : isFunction(opts.arg) ? opts.arg() : opts.arg;
-
+                    else if (typeof opts.test === 'object') {
                         $.each(opts.test, function (i, test) {
-                            var _arg;
                             if (isFunction(test)) {
-                                _arg = argIsArray ? ( isFunction(arg[i]) ? arg[i]() : arg[i] ) : ( isFunction(arg) ? arg() : arg );
-                                testResult = test(val, _arg);
+                                testResult = test(val, arg);
                                 if (testResult !== true) {
                                     return false;
                                 }
@@ -140,11 +132,7 @@
                     errorTarget.addClass(fieldErrorClass).after(errorEl);
                     return false;
                 } else {
-                    temp = errorEl.get(0);
-                    // this is for zepto
-                    if (temp.parentNode) {
-                        temp.parentNode.removeChild(temp);
-                    }
+                    errorEl.remove();
                     errorTarget.removeClass(fieldErrorClass);
                     return true;
                 }

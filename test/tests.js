@@ -631,12 +631,12 @@ test('custom error messages', function() {
 test('test support for multiple tests', function() {
     var form = fixture('<input type="text" id="textInput1" />');
 
-    function minLength(val, min) {
-        return val.length < min ? new Error('Your name must be longer.') : true;
+    function minLength(val, arg) {
+        return val.length < arg[0] ? new Error('Your name must be longer.') : true;
     }
 
-    function maxLength(val, max) {
-        return val.length > max ? new Error('Your name must be shorter.') : true;
+    function maxLength(val, arg) {
+        return val.length > arg[1] ? new Error('Your name must be shorter.') : true;
     }
 
     form.isHappy({
