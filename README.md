@@ -1,3 +1,3 @@
 #Happy.js – are your forms happy? Just ask 'em!
 
-[happyjs.com](http://happyjs.com) | [Demo](http://happyjs.com/demo.html)
+[http://projects.joreteg.com/Happy.js/](http://projects.joreteg.com/Happy.js/) | [Demo](http://projects.joreteg.com/Happy.js/demo.html)
